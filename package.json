@@ -15,8 +15,7 @@
     "update": "run-p update:** && npm i",
     "update:prisma:run": "npm i @prisma/client @prisma/generator-helper",
     "update:prisma:dev": "npm i --save-dev prisma prettier-plugin-prisma",
-    "update:typescript-eslint": "npm i --save-dev @typescript-eslint/eslint-plugin @typescript-eslint/parser",
-    "start": "npm run dev:wrangler"
+    "update:typescript-eslint": "npm i --save-dev @typescript-eslint/eslint-plugin @typescript-eslint/parser"
   },
   "dependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
