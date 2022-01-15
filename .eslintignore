@@ -1,0 +1,11 @@
+node_modules
+
+.mf
+/.cache
+/build
+/public/build
+/public/_worker*
+
+/app/tailwind.css
+
+/server-build

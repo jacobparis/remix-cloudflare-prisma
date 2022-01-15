@@ -1,0 +1,28 @@
+tasks:
+  - name: Application
+    init: npm install && npm run build
+    command: npm run dev
+    env:
+      NODE_ENV: development
+
+ports:
+  - port: 3000
+    onOpen: open-browser
+
+vscode:
+  extensions:
+    - bungcip.better-toml
+    - prisma.prisma
+    - mongodb.mongodb-vscode
+    - ms-azuretools.vscode-docker
+    - esbenp.prettier-vscode
+    - dbaeumer.vscode-eslint
+    - sleistner.vscode-fileutils
+    - eamodio.gitlens
+    - heybourn.headwind
+    - bradlc.vscode-tailwindcss
+    - oderwat.indent-rainbow
+    - wix.vscode-import-cost
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - csstools.postcss

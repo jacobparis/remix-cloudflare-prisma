@@ -1,0 +1,43 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb", "dataProxy"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ROOT
+  MEMBER
+}
+
+model User {
+  id          String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  email       String    @unique(map: "User.email_unique") // TODO: @unique is not supported, do in init
+  name        String
+  password    String
+  role        Role      @default(MEMBER)
+  files       File[]
+  isVerified  Boolean   @default(false)
+
+  @@map("users")
+}
+
+enum FileType {
+  AVATAR
+}
+
+model File {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  url       String
+  type      FileType
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("files")
+}
