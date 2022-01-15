@@ -1,7 +1,5 @@
 import { Link, LoaderFunction, MetaFunction, useLoaderData } from "remix"
-// import { prismaRead } from "~/prisma.server"
 import invariant from "tiny-invariant"
-import type { Card } from "@prisma/client"
 
 import { getAuthenticator } from "~/auth.server"
 export const loader: LoaderFunction = async ({ request, context }) => {
@@ -15,11 +13,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   }
 }
 
-type LoaderType = {
-  cards: Card[]
-  numberOfCards: number
-}
-
 export const meta: MetaFunction = () => {
   return {
     title: "Dashboard",
@@ -27,14 +20,23 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Index() {
-  const { cards, numberOfCards } = useLoaderData<LoaderType>()
+  const { user } = useLoaderData()
 
   return (
     <>
       <div className="max-w-3xl px-4 mx-auto mb-8 sm:px-6 md:px-8">
-        <h1 className="mb-4 text-2xl font-semibold text-gray-900">User</h1>
+        <h1 className="mb-4 text-2xl font-semibold text-gray-900">
+          Welcome, {user.name}!
+        </h1>
 
-
+        <footer>
+          <Link
+            to="/app/settings"
+            className="text-rose-600 hover:text-rose-500"
+          >
+            Update profile information
+          </Link>
+        </footer>
       </div>
     </>
   )

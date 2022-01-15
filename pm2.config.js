@@ -3,12 +3,12 @@ module.exports = {
     {
       name: "Server",
       script: "node build-server.mjs",
-      watch: ['./build/assets.json'],
+      watch: ["./build/assets.json"],
       // ignore_watch: ['.'],
       autorestart: false,
       env: {
         NODE_ENV: process.env.NODE_ENV ?? "development",
-        DATABASE_URL: 'prisma://aws-us-east-1.prisma-data.com/?api_key=ui3Is_BBdej6sPq6e7KmLS0BFK6vcw-9kwkydmPa0FHAHS5yua9Zloyo6797WO5O'
+        DATABASE_URL: process.env.DATABASE_URL,
       },
     },
     {
@@ -17,7 +17,7 @@ module.exports = {
       ignore_watch: ["."],
       env: {
         NODE_ENV: process.env.NODE_ENV ?? "development",
-        DATABASE_URL: 'prisma://aws-us-east-1.prisma-data.com/?api_key=ui3Is_BBdej6sPq6e7KmLS0BFK6vcw-9kwkydmPa0FHAHS5yua9Zloyo6797WO5O'
+        DATABASE_URL: process.env.DATABASE_URL,
       },
     },
     {
@@ -26,18 +26,18 @@ module.exports = {
       ignore_watch: ["."],
       env: {
         NODE_ENV: process.env.NODE_ENV ?? "development",
-        BROWSER: 'none',
-        DATABASE_URL: 'prisma://aws-us-east-1.prisma-data.com/?api_key=ui3Is_BBdej6sPq6e7KmLS0BFK6vcw-9kwkydmPa0FHAHS5yua9Zloyo6797WO5O'
+        BROWSER: "none",
+        DATABASE_URL: process.env.DATABASE_URL,
       },
     },
     {
       name: "Prisma",
       script: "prisma generate",
-      watch: ['./prisma'],
+      watch: ["./prisma"],
       autorestart: false,
       env: {
         NODE_ENV: process.env.NODE_ENV ?? "development",
-        PRISMA_CLIENT_ENGINE_TYPE: 'dataproxy',
+        PRISMA_CLIENT_ENGINE_TYPE: "dataproxy",
       },
     },
     {

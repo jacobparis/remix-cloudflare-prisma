@@ -2,5 +2,5 @@
   "files": [],
   "exclude": ["node_modules"],
   "extends": "./shared-tsconfig.json",
-  "references": [{ "path": "app" }, { "path": "prisma" }]
+  "references": [{ "path": "app" }]
 }
