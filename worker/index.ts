@@ -17,8 +17,9 @@ const handleFetch = createFetchHandler({
       ...context,
       prismaRead: getClient("read"),
       prismaWrite: getClient("write"),
-      authPepper:
-        "sutYPD7r-V.nqQYmFDkwwKoXLwv*cLz3EU-aDQumMPs-6b-nVF*-FW",
+      cloudflareImagesToken: process.env.CLOUDFLARE_IMAGES_TOKEN,
+      cloudflareAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+      authPepper: "sutYPD7r-V.nqQYmFDkwwKoXLwv*cLz3EU-aDQumMPs-6b-nVF*-FW",
       sessionStorage: createCookieSessionStorage({
         cookie: {
           name: "_session",

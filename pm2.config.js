@@ -9,6 +9,8 @@ module.exports = {
       env: {
         NODE_ENV: process.env.NODE_ENV ?? "development",
         DATABASE_URL: process.env.DATABASE_URL,
+        CLOUDFLARE_IMAGES_TOKEN: process.env.CLOUDFLARE_IMAGES_TOKEN,
+        CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
       },
     },
     {
@@ -18,6 +20,8 @@ module.exports = {
       env: {
         NODE_ENV: process.env.NODE_ENV ?? "development",
         DATABASE_URL: process.env.DATABASE_URL,
+        CLOUDFLARE_IMAGES_TOKEN: process.env.CLOUDFLARE_IMAGES_TOKEN,
+        CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
       },
     },
     {
@@ -28,6 +32,8 @@ module.exports = {
         NODE_ENV: process.env.NODE_ENV ?? "development",
         BROWSER: "none",
         DATABASE_URL: process.env.DATABASE_URL,
+        CLOUDFLARE_IMAGES_TOKEN: process.env.CLOUDFLARE_IMAGES_TOKEN,
+        CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
       },
     },
     {

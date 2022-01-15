@@ -23,6 +23,14 @@ async function build() {
     throw new Error("DATABASE_URL is required")
   }
 
+  if (!process.env.CLOUDFLARE_ACCOUNT_ID) {
+    throw new Error("CLOUDFLARE_ACCOUNT_ID is required")
+  }
+
+  if (!process.env.CLOUDFLARE_IMAGES_TOKEN) {
+    throw new Error("CLOUDFLARE_IMAGES_TOKEN is required")
+  }
+
   console.log(`Building Worker in ${mode} mode for version ${version}`)
 
   const outfile = "./public/_worker.js"
@@ -45,6 +53,8 @@ async function build() {
           NODE_ENV: mode,
           VERSION: version,
           DATABASE_URL: process.env.DATABASE_URL,
+          CLOUDFLARE_IMAGES_TOKEN: process.env.CLOUDFLARE_IMAGES_TOKEN,
+          CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
         },
       }),
     },

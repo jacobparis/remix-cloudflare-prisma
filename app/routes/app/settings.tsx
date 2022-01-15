@@ -12,6 +12,8 @@ import {
 import { getAuthenticator } from "~/auth.server"
 import { AlertGreen } from "~/AlertGreen"
 import { AlertBlue } from "~/AlertBlue"
+import parseFormData from "@ssttevee/cfw-formdata-polyfill/ponyfill"
+import { ImageInput } from "~/ImageInput"
 
 export const meta: MetaFunction = () => {
   return {
@@ -19,47 +21,134 @@ export const meta: MetaFunction = () => {
   }
 }
 
+const uploadHandler = async (
+  file: Blob,
+  {
+    cloudflareAccountId,
+    cloudflareImagesToken,
+  }: { cloudflareAccountId: string; cloudflareImagesToken: string }
+) => {
+  const body = new FormData()
+  body.append(
+    "file",
+    new Blob([await file.arrayBuffer()], { type: "image/png" }),
+    "file.png"
+  )
+
+  const response = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/images/v1`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${cloudflareImagesToken}`,
+      },
+      body,
+    }
+  )
+
+  const string = await response.text()
+  console.log({ string })
+  if (string.includes("ERROR")) {
+    // ERROR 9422: Decode error: image failed to be decoded: Uploaded image must have image/jpeg or image/png content type
+    console.error(string)
+
+    return undefined
+  }
+
+  const { result } = JSON.parse(string)
+
+  return result.variants[0]
+}
+
 export const action: ActionFunction = async ({ request, context }) => {
-  const form = await request.formData()
+  const form = await parseFormData.call(request)
 
   const authenticator = getAuthenticator(context)
 
   const user = await authenticator.isAuthenticated(request)
   invariant(user, "Not authorized")
 
-  const nameInput = form.get("name")
-  invariant(nameInput, "Name is required")
-  const name = nameInput.toString()
-
-  const { prismaWrite, prismaRead } = context
+  const {
+    prismaWrite,
+    prismaRead,
+    cloudflareAccountId,
+    cloudflareImagesToken,
+  } = context
 
   const dbUser = await prismaRead.user.findUnique({
     where: {
       email: user.email,
     },
     select: {
+      id: true,
       name: true,
+      isVerified: true,
     },
   })
 
-  if (dbUser.name !== name) {
-    await prismaWrite.user.update({
-      where: {
-        email: user.email,
-      },
-      data: {
-        name: nameInput.toString(),
-        isVerified: true,
-      },
+  const nameInput = form.get("name")
+  const shouldUpdateName = nameInput && dbUser.name !== nameInput.toString()
+  let nameData = {} as { name?: string }
+  if (shouldUpdateName) {
+    nameData = {
+      name: nameInput.toString(),
+    }
+  }
+
+  const avatar = form.get("avatar") as Blob
+  let avatarData = {}
+  if (avatar) {
+    const avatarUrl = await uploadHandler(avatar, {
+      cloudflareAccountId,
+      cloudflareImagesToken,
     })
 
+    avatarData = {
+      files: {
+        createMany: {
+          data: [
+            {
+              url: avatarUrl,
+              type: "AVATAR",
+              userId: dbUser.id,
+            },
+          ],
+        },
+      },
+    }
+  }
+
+  if (!shouldUpdateName && !avatar) {
+    // Nothing actually changed, let's bail
+    return json({
+      success: false,
+    })
+  }
+
+  await prismaWrite.user.update({
+    where: {
+      email: user.email,
+    },
+    data: {
+      ...nameData,
+      ...avatarData,
+      isVerified: true,
+    },
+  })
+
+  // Some of the user information gets stored in the session for immediate access
+  // If any of that is updated, we want to also update the session
+  // Otherwise the user would have to log out and back in to refresh it
+  const sessionInformationChanged = !dbUser.isVerified || shouldUpdateName
+
+  if (sessionInformationChanged) {
     const { commitSession, getSession } = context.sessionStorage
     const session = await getSession(request.headers.get("Cookie"))
 
     const sessionUser = session.get("user")
     session.set("user", {
       ...sessionUser,
-      name: nameInput.toString(),
+      name: nameData.name,
       isVerified: true,
     })
 
@@ -86,9 +175,9 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const user = await authenticator.isAuthenticated(request)
   invariant(user, "Not authorized")
 
-  const { prismaWrite } = context
+  const { prismaRead } = context
 
-  const dbUser = await prismaWrite.user.findUnique({
+  const dbUser = await prismaRead.user.findUnique({
     where: {
       email: user.email,
     },
@@ -101,6 +190,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     },
   }
 }
+
 export default function Settings() {
   const { user } = useLoaderData()
   const submission = useActionData() || {}
@@ -163,10 +253,12 @@ export default function Settings() {
                         name="name"
                         id="name"
                         defaultValue={user.name || ""}
-                        required
                         className="block w-48 border-gray-300 rounded-md shadow-sm focus:ring-rose-500 focus:border-rose-500 sm:text-sm"
                       />
                     </div>
+                  </div>
+                  <div className="max-w-xs">
+                    <ImageInput label="Avatar" name="avatar" id="avatar" />
                   </div>
                 </div>
               </div>
