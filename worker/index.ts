@@ -19,6 +19,8 @@ const handleFetch = createFetchHandler({
       prismaWrite: getClient("write"),
       cloudflareImagesToken: process.env.CLOUDFLARE_IMAGES_TOKEN,
       cloudflareAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+      // TODO: This should be set externally, like from an environment variable.
+      // It will be needed to hash passwords on creation and login
       authPepper: "sutYPD7r-V.nqQYmFDkwwKoXLwv*cLz3EU-aDQumMPs-6b-nVF*-FW",
       sessionStorage: createCookieSessionStorage({
         cookie: {
