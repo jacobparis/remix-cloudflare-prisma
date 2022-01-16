@@ -47,7 +47,7 @@ const uploadHandler = async (
   )
 
   const string = await response.text()
-  console.log({ string })
+
   if (string.includes("ERROR")) {
     // ERROR 9422: Decode error: image failed to be decoded: Uploaded image must have image/jpeg or image/png content type
     console.error(string)
@@ -195,7 +195,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     user: {
       name: dbUser.name,
       isVerified: dbUser.isVerified,
-      avatarUrl: dbUser.files[0].url,
+      avatarUrl: dbUser.files[0]?.url,
     },
   }
 }

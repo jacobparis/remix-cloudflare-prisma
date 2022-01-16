@@ -35,7 +35,13 @@ export default function Login() {
     <>
       <div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 style={{filter: 'drop-shadow(0.125rem 0.25rem 0px #e11d48)'}} className="text-6xl font-extrabold text-center mb-6  text-gray-900 relative"> LOGO </h1>
+          <h1
+            style={{ filter: "drop-shadow(0.125rem 0.25rem 0px #e11d48)" }}
+            className="relative mb-6 text-6xl font-extrabold text-center text-gray-900"
+          >
+            {" "}
+            LOGO{" "}
+          </h1>
 
           <h2 className="mb-6 text-3xl font-extrabold text-center text-gray-500">
             Welcome back!
@@ -49,7 +55,7 @@ export default function Login() {
           >
             {user.name ? `Continue as ${user.name}` : "Continue"}
           </Link>
-          <Form method="post" action="/auth/signout" reloadDocument>
+          <Form method="post" action="/auth/sign-out" reloadDocument>
             <div>
               <button
                 type="submit"
