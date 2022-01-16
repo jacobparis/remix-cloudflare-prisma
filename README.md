@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/5633704/149652098-2fb61ce1-aea5-4cea-b4bb-a6d2888d129b.png)
+
 # Remix Cloudflare Prisma Example
 
 Developed by [Jacob Paris](https://www.jacobparis.com/)
@@ -18,9 +20,11 @@ Check out the [demo](https://remix-cloudflare-prisma.pages.dev/)
 - A file upload form that sends to Cloudflare Images
 - Password hashing with PBKDF2
 
-![image](https://user-images.githubusercontent.com/5633704/149652098-2fb61ce1-aea5-4cea-b4bb-a6d2888d129b.png)
+### Settings page
 ![image](https://user-images.githubusercontent.com/5633704/149652076-f6f89e65-7af1-4cbe-8ea4-38a5e7b34aa8.png)
-![image](https://user-images.githubusercontent.com/5633704/149652088-10e2453a-2703-4ace-806f-3b9664c4c14b.png)
+
+### Home page
+![image](https://user-images.githubusercontent.com/5633704/149652614-f251cdb0-26f5-42c8-9e66-735989c1b777.png)
 
 
 ## Development
