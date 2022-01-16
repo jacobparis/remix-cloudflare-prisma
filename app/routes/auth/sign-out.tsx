@@ -1,4 +1,4 @@
-import { ActionFunction, redirect } from "remix"
+import { ActionFunction, LoaderFunction, redirect } from "remix"
 
 export const action: ActionFunction = async ({ request, context }) => {
   const { destroySession, getSession } = context.sessionStorage
@@ -10,4 +10,9 @@ export const action: ActionFunction = async ({ request, context }) => {
       "Set-Cookie": await destroySession(session),
     },
   })
+}
+
+export const loader: LoaderFunction = () => {
+  // This is an action only route, so redirect GET requests
+  return redirect("/triage")
 }

@@ -7,10 +7,12 @@ export function ImageInput({
   label,
   id,
   name,
+  defaultImage,
 }: {
   label: string
   id: string
   name: string
+  defaultImage: string
 }) {
   const [resetKey, setResetKey] = useState(() => Math.random())
   const reset = () => {
@@ -32,12 +34,25 @@ export function ImageInput({
         </button>
       </div>
 
-      <FileZone id={id} key={resetKey} name={name} />
+      <FileZone
+        id={id}
+        key={resetKey}
+        name={name}
+        defaultImage={defaultImage}
+      />
     </>
   )
 }
 
-function FileZone({ id, name }: { id: string; name: string }) {
+function FileZone({
+  id,
+  name,
+  defaultImage,
+}: {
+  id: string
+  name: string
+  defaultImage: string
+}) {
   const input = useRef<HTMLInputElement>(null)
   const [images, setImages] = useState<string[]>([])
   const onDrop = useCallback(
@@ -81,10 +96,15 @@ function FileZone({ id, name }: { id: string; name: string }) {
             ? `url(${draggedFiles[0]})`
             : images.length
             ? `url(${images[0]})`
+            : defaultImage
+            ? `url(${defaultImage})`
             : "none",
         }}
       >
-        <div className={images.length ? "opacity-0 pointer-events-none" : ""}>
+        <div
+          style={{ backgroundColor: "#fffe" }}
+          className={images.length ? "opacity-0 pointer-events-none" : ""}
+        >
           <div className="pt-5 space-y-1 text-center pb-7 ">
             <svg
               className="w-20 h-20 mx-auto text-gray-400"

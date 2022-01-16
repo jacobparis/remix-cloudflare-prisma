@@ -1,4 +1,10 @@
-import { Link, LoaderFunction, MetaFunction, useLoaderData } from "remix"
+import {
+  Link,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+  useLoaderData,
+} from "remix"
 import invariant from "tiny-invariant"
 
 import { getAuthenticator } from "~/auth.server"
@@ -7,6 +13,10 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
   const user = await authenticator.isAuthenticated(request)
   invariant(user, "Not authorized")
+
+  if (!user.isVerified) {
+    return redirect("/triage")
+  }
 
   const [dbFile] = await context.prismaRead.file.findMany({
     where: {
@@ -19,6 +29,8 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       user: true,
     },
   })
+
+  console.log({ user })
 
   return {
     user,
@@ -48,13 +60,22 @@ export default function Index() {
           </div>
         ) : null}
 
-        <footer>
+        <footer className="flex flex-col space-y-4">
           <Link
             to="/app/settings"
             className="text-rose-600 hover:text-rose-500"
           >
             Update profile information
           </Link>
+
+          <form method="post" action="/auth/sign-out">
+            <button
+              type="submit"
+              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+            >
+              Log out
+            </button>
+          </form>
         </footer>
       </div>
     </>

@@ -120,7 +120,7 @@ export const action: ActionFunction = async ({ request, context }) => {
   if (!shouldUpdateName && !avatar) {
     // Nothing actually changed, let's bail
     return json({
-      success: false,
+      success: true,
     })
   }
 
@@ -180,12 +180,22 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     where: {
       email: user.email,
     },
+    select: {
+      name: true,
+      isVerified: true,
+      files: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   })
 
   return {
     user: {
       name: dbUser.name,
       isVerified: dbUser.isVerified,
+      avatarUrl: dbUser.files[0].url,
     },
   }
 }
@@ -198,7 +208,12 @@ export default function Settings() {
     <>
       <div className="max-w-3xl px-4 mx-auto mb-8 sm:px-6 md:px-8">
         <div>
-          {submission.success ? (
+          {!user.isVerified ? (
+            <AlertBlue className="mb-4">
+              In order to verify your identity, we need you to enter some
+              information
+            </AlertBlue>
+          ) : submission.success ? (
             <AlertGreen className="mb-4">
               <p>Success</p>
               <p className="mt-2 text-sm text-green-700">
@@ -215,11 +230,6 @@ export default function Settings() {
                 </div>
               </div>
             </AlertGreen>
-          ) : !user.isVerified ? (
-            <AlertBlue className="mb-4">
-              In order to verify your identity, we need you to enter some
-              information
-            </AlertBlue>
           ) : null}
 
           <form
@@ -257,7 +267,12 @@ export default function Settings() {
                     </div>
                   </div>
                   <div className="max-w-xs">
-                    <ImageInput label="Avatar" name="avatar" id="avatar" />
+                    <ImageInput
+                      label="Avatar"
+                      name="avatar"
+                      id="avatar"
+                      defaultImage={user.avatarUrl}
+                    />
                   </div>
                 </div>
               </div>
