@@ -110,7 +110,6 @@ export const action: ActionFunction = async ({ request, context }) => {
             {
               url: avatarUrl,
               type: "AVATAR",
-              userId: dbUser.id,
             },
           ],
         },

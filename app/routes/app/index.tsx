@@ -8,8 +8,21 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const user = await authenticator.isAuthenticated(request)
   invariant(user, "Not authorized")
 
+  const [dbFile] = await context.prismaRead.file.findMany({
+    where: {
+      userId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      user: true,
+    },
+  })
+
   return {
     user,
+    avatarUrl: dbFile && dbFile.url,
   }
 }
 
@@ -20,7 +33,7 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Index() {
-  const { user } = useLoaderData()
+  const { user, avatarUrl } = useLoaderData()
 
   return (
     <>
@@ -28,6 +41,12 @@ export default function Index() {
         <h1 className="mb-4 text-2xl font-semibold text-gray-900">
           Welcome, {user.name}!
         </h1>
+
+        {avatarUrl ? (
+          <div className="mb-8">
+            <img src={avatarUrl} />
+          </div>
+        ) : null}
 
         <footer>
           <Link
