@@ -18,6 +18,11 @@ Check out the [demo](https://remix-cloudflare-prisma.pages.dev/)
 - A file upload form that sends to Cloudflare Images
 - Password hashing with PBKDF2
 
+![image](https://user-images.githubusercontent.com/5633704/149652098-2fb61ce1-aea5-4cea-b4bb-a6d2888d129b.png)
+![image](https://user-images.githubusercontent.com/5633704/149652076-f6f89e65-7af1-4cbe-8ea4-38a5e7b34aa8.png)
+![image](https://user-images.githubusercontent.com/5633704/149652088-10e2453a-2703-4ace-806f-3b9664c4c14b.png)
+
+
 ## Development
 
 I use `pm2` to orchestrate the development tooling. You can use pm2 to run start all the development services at once.
@@ -48,7 +53,9 @@ tailwindcss -o ./app/tailwind.css --watch
 
 ### Remix
 
-Remix is a
+Remix is an extension to React Router that runs on both client and server, allowing request endpoints to be created at each route and client routes to be rendered serverside.
+
+Remix will rebuild whenever any files in its `./app` directory are updated.
 
 ```sh
 remix watch
@@ -56,17 +63,23 @@ remix watch
 
 ### Server
 
+The server is a Cloudflare worker that gets compiled to a `_worker.js` file in the `./public` directory. The native Cloudflare Pages way to create the worker is to use a `functions/[[path]].js` file, but that method does not allow us to modify the build process. Prisma will not work without adding some esbuild plugins, which means we need to compile our worker ourselves.
+
+PM2 will recompile the worker every time Remix rebuilds.
+
 ```sh
 node build-server.mjs
 ```
 
 ### Wrangler
 
+Wrangler is a command line tool for simulating a Cloudflare Pages environment locally.
+
 ```sh
 npx wrangler pages dev ./public
 ```
 
-Open up [http://localhost:8788](http://localhost:8788) and you should be ready to go!
+Wrangler will open up on [http://localhost:8788](http://localhost:8788) and serve your application from its built files.
 
 ## Setup
 
