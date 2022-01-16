@@ -1,8 +1,12 @@
 # Remix Cloudflare Prisma Example
 
+Developed by [Jacob Paris](https://www.jacobparis.com/)
+
 - [Remix Docs](https://remix.run/docs)
 - [Cloudflare Pages Docs](https://developers.cloudflare.com/pages)
 - [Prisma Docs](https://www.prisma.io/docs/getting-started)
+
+If you have any questions, feel free to [hit me up on Twitter](https://twitter.com/intent/follow?screen_name=jacobmparis)
 
 ## Demo
 
