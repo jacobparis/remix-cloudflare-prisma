@@ -14,7 +14,7 @@ enum Role {
 }
 
 model User {
-  id          String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   email       String    @unique(map: "User.email_unique") // TODO: @unique is not supported, do in init
@@ -32,7 +32,7 @@ enum FileType {
 }
 
 model File {
-  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   url       String
   type      FileType
