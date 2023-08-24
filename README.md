@@ -155,14 +155,13 @@ Check the `build-server.mjs` function and make sure you're defining each environ
 
 Other node packages that Remix uses must be polyfilled to work on Cloudflare.
 
-If you get an error that says something like `Could not resolve "https" (use "platform: 'node'" when building for node)`, make sure you're importing the `@esbuild-plugins/node-modules-polyfill` plugin in your `build-server.mjs`
+If you get an error that says something like `Could not resolve "https" (use "platform: 'node'" when building for node)`, make sure you're importing the `esbuild-plugins-node-modules-polyfill` plugin in your `build-server.mjs`
 
 ```js
-import NodeModulesPolyfill from "@esbuild-plugins/node-modules-polyfill"
-const { NodeModulesPolyfillPlugin } = NodeModulesPolyfill
+import { nodeModulesPolyfillPlugin } from "esbuild-plugins-node-modules-polyfill"
 
 esbuild.build({
-  plugins: [NodeModulesPolyfillPlugin()],
+  plugins: [nodeModulesPolyfillPlugin()],
 })
 ```
 
