@@ -1,7 +1,6 @@
 import esbuild from "esbuild"
 
-import NodeModulesPolyfill from "@esbuild-plugins/node-modules-polyfill"
-const { NodeModulesPolyfillPlugin } = NodeModulesPolyfill
+import { nodeModulesPolyfillPlugin } from "esbuild-plugins-node-modules-polyfill"
 
 import alias from "esbuild-plugin-alias"
 
@@ -60,7 +59,7 @@ async function build() {
     },
     outfile,
     plugins: [
-      NodeModulesPolyfillPlugin(),
+      nodeModulesPolyfillPlugin(),
       alias({
         "@prisma/client": require.resolve("@prisma/client"),
       }),
