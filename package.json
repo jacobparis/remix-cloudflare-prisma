@@ -18,7 +18,6 @@
     "update:typescript-eslint": "npm i --save-dev @typescript-eslint/eslint-plugin @typescript-eslint/parser"
   },
   "dependencies": {
-    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@prisma/client": "^3.7.0",
     "@prisma/generator-helper": "^3.7.0",
     "@remix-run/cloudflare-pages": "^1.1.1",
@@ -28,6 +27,7 @@
     "@tailwindcss/forms": "^0.4.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.14.10",
+    "esbuild-plugins-node-modules-polyfill": "^1.5.0",
     "esbuild-plugin-alias": "^0.2.1",
     "esbuild-register": "^3.3.1",
     "mongo-uri-builder": "^4.0.0",
